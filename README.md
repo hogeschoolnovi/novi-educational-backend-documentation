@@ -125,19 +125,13 @@ Het opvragen van de gebruikersgegevens vereist een **token**. De response bevat 
 ### 4. Gebruiker aanpassen
 `POST /api/user/update`
 
-Het is mogelijk om een gebruiker zijn eigen e-mail of wachtwoord aan te laten passen. Dit vereist, naast de gegevens zelf, ook een **token**. Om het e-mailadres aan te passen moet de volgende data worden meegestuurd:
+Het is mogelijk om een gebruiker zijn eigen e-mail of wachtwoord aan te laten passen. Dit vereist, naast de gegevens zelf, ook een **token**. Wanneer één van de twee entiteiten aangepast moeten worden, moet de andere data alsnog worden meegestuurd. Wachtwoorden moeten altijd een minimale lengte van 6 tekens hebben.
 
-```json
-{
-   "email" : "sjaak@sjaak.nl",
-}
 ```
-
-Om het wachtwoord aan te passen moet de volgende data worden meegestuurd:
-
-```json
 {
    "email" : "sjaak@sjaak.nl",
+   "password": "123456",
+   "repeatedPassword": "123456"
 }
 ```
 
