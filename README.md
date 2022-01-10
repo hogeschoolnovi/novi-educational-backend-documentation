@@ -20,7 +20,7 @@ De backend draait op een [Heroku](https://www.heroku.com/) server. Deze server w
    * [Beveiligd endpoint [user]](#6-beveiligd-endpoint-[user])
    * [Beveiligd endpoint [admin]](#7-beveiligd-endpoint-[admin])
 * [Postman gebruiken](#rest-endpoint-benaderen-in-postman)
-
+* [Update November 2021](#update-november-2021)
 
 ## Gebruikersrollen
 Deze backend ondersteunt het gebruik van twee user-rollen:
@@ -38,10 +38,10 @@ HTTP 401 Unauthorized
 In de situatie dat een admin zowel gebruikers-rechten heeft als admin-rechten, krijgt deze dus twee rollen toegewezen. 
 
 ## Rest endpoints
-Alle rest-endpoints draaien op deze server: https://polar-lake-14365.herokuapp.com. Dit is de basis-uri. Alle voorbeeld-data betreffende de endpoints zijn in JSON format weergegeven. Wanneer er wordt vermeld dat er een token vereist is, betekent dit dat er een `Bearer` + `token` _header_ moet worden meegestuurd met het request:
+Alle rest-endpoints draaien op deze server: https://frontend-educational-backend.herokuapp.com/. Dit is de basis-uri. Alle voorbeeld-data betreffende de endpoints zijn in JSON format weergegeven. Wanneer er wordt vermeld dat er een **token** vereist is, betekent dit dat er een `Bearer` + `token` _header_ moet worden meegestuurd met het request:
 
 ```json
-{
+headers: {
    "Content-Type": "application/json",
    "Authorization": "Bearer xxx.xxx.xxx",
 }
@@ -50,7 +50,7 @@ Alle rest-endpoints draaien op deze server: https://polar-lake-14365.herokuapp.c
 ### 0. Test
 `GET /api/test/all`
 
-Dit endpoint is vrij toegankelijk en is niet afgeschermd. Het is daarom een handig endpoint om te testen of het verbinden met de backend werkt. De response bevat een enkele string: `"Public Content."`
+Dit endpoint is vrij toegankelijk en is niet afgeschermd. Het is daarom een handig endpoint om te testen of het verbinden met de backend werkt. De response bevat een enkele string: `"De API is bereikbaar."`
 
 ### 1. Registreren
 `POST /api/auth/signup`
@@ -66,28 +66,34 @@ Het aanmaken van een nieuwe gebruiker (met user-rol) vereist de volgende informa
 }
 ```
 
-Het aanmaken van een nieuwe gebruiker (met admin-rol) vereist de volengende informatie:
+Let hierbij op de volgende vereisten:
+* Het emailadres moet daadwerkelijk een `@` bevatten
+* Het wachtwoord en gebruikersnaam moeten **minimaal 6 tekens** bevatten
+* Wanneer je een gebruiker probeert te registreren met een username die al bestaat, krijg je een foutcode. De details over deze foutmelding vindt je in `e.response`.
+
+Indien de registratie succesvol was, ontvang je een succesmelding.
+
+#### Optionele velden
+Het is toegestaan om een _string_ mee te sturen onder de `info`-key, zodat je hier additionele informatie over de gebruiker in kunt opslaan:
 
 ```json
 {
-   "username": "klaas",
-   "email" : "klaas@novi.nl",
+   "username": "piet",
+   "email" : "piet@novi.nl",
    "password" : "123456",
-   "role": ["admin"]
+   "info": "Ik woon in Utrecht",
+   "role": ["user"]
 }
 ```
 
-Het is ook mogelijk een gebruiker aan te maken met twee rollen:
+#### Rollen
+Wanneer je een gebruiker met admin-rol wil aanmaken, verander je de rol als volgt: "role": ["admin"]. Het is ook mogelijk een gebruiker aan te maken met twee rollen:
 
 ```json
 {
    "role": ["user", "admin"]
 }
 ```
-
-De response bevat een succesmelding.
-
-_Let op_: er mogen géén additionele keys worden meegestuurd. Het e-mailadres moet altijd een e-mailadres zijn (met @ erin) anders geeft de backend een foutmelding.
 
 ### 2. Inloggen
 `POST /api/auth/signin`
@@ -154,3 +160,6 @@ Wanneer je een authorisation-token hebt ontvangen zal de backend bij alle beveil
 ![Plaatje postman met Authorization](img/auth_postman_example.png)
 
 Onder het kopje headers voeg je als `Key` `Authorization` toe. Daarin zet je `<TOKEN TYPE> <SPATIE> <ACCESSTOKEN>` (zonder <>). 
+
+## Update November 2021
+Deze backend is geüpdate en draait nu op een nieuw webadres en heeft meer functionaliteit. Maar geen zorgen, het oude adres: https://polar-lake-14365.herokuapp.com werkt nog steeds.
