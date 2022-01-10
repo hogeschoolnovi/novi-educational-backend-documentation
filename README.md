@@ -15,10 +15,12 @@ De backend draait op een [Heroku](https://www.heroku.com/) server. Deze server w
    * [Registreren](#1-registeren)
    * [Inloggen](#0-inloggen)
    * [Gebruiker opvragen](#3-gebruiker-opvragen)
-   * [Gebruiker aanpassen](#4-gebruiker-aanpassen)
-   * [Alle gebruikers opvragen [admin]](#5-alle-gebruikers-opvragen-[admin])
-   * [Beveiligd endpoint [user]](#6-beveiligd-endpoint-[user])
-   * [Beveiligd endpoint [admin]](#7-beveiligd-endpoint-[admin])
+   * [Profielfoto uploaden](#4-profielfoto-uploaden)
+   * [Wachtwoord of email wijzigen](#5-)
+   * [Alle gebruikers opvragen [admin]](#6-alle-gebruikers-opvragen-[admin])
+   * [Beveiligd endpoint [user]](#7-beveiligd-endpoint-[user])
+   * [Beveiligd endpoint [admin]](#8-beveiligd-endpoint-[admin])
+   * [Errors](#9-errors)
 * [Postman gebruiken](#rest-endpoint-benaderen-in-postman)
 * [Update November 2021](#update-november-2021)
 
@@ -150,7 +152,30 @@ Een gebruiker kan een profielfoto aan zijn profiel toevoegen. Dit vereist een **
 }
 ```
 
-Wanneer dit succesvol is, wordt het volledige gebruikers-object geretourneerd met alle huidige informatie over de gebruiker. 
+Wanneer dit succesvol is, wordt het volledige gebruikers-object geretourneerd met alle huidige informatie over de gebruiker.
+
+### 5. Gebruiker aanpassen
+`PUT /api/user`
+
+Het is mogelijk om een gebruiker zijn eigen e-mail, wachtwoord, profielfoto of informatie aan te laten passen. Dit vereist, naast de gegevens zelf, ook een token. Het aanpassen van het emailadres doe je als volgt:
+
+```json
+{
+   "email" : "sjaak@sjaak.nl",
+}
+```
+
+Het aanpassen van het wachtwoord doe je als volgt:
+
+```json
+{
+   "password": "123456",
+   "repeatedPassword": "123456"
+}
+```
+
+Wanneer dit succesvol is, wordt het volledige gebruikers-object geretourneerd met alle huidige informatie over de gebruiker.
+
 ### 6. Alle gebruikers opvragen [admin]
 `GET /api/admin/all`
 
@@ -166,8 +191,7 @@ Alleen gebruikers met een user-rol kunnen dit endpoint benaderen. Het opvragen v
 Alleen gebruikers met een admin-rol kunnen dit endpoint benaderen. Het opvragen van deze gegevens vereist een **token**. De response bevat een enkele string: `"Admin Board."`.
 
 ### 9. Errors
-De backend kan verschillende errors gooien. We hebben ons best gedaan om deze af te vangen. Lees dan ook vooral de
-foutmelding.
+De backend kan verschillende errors teruggeven. We hebben ons best gedaan om deze allemaal af te vangen. Lees dan ook vooral de foutmelding in `e.response`.
 
 ## Restpoints benaderen in Postman
 Wanneer je een authorisation-token hebt ontvangen zal de backend bij alle beveiligde endpoints willen controleren wie de aanvrager is op basis van deze token. Dit zul je dus ook in Postman mee moeten geven.
