@@ -126,33 +126,48 @@ De response bevat een authorisatie-token (JWT) en alle gebruikersinformatie. Ond
 ### 3. Gebruiker opvragen
 `GET /api/user`
 
-Het opvragen van de gebruikersgegevens vereist een **token**. De response bevat alle informatie over de gebruiker zoals beschreven bij registratie.
+Het opvragen van de gebruikersgegevens vereist een **token**. Op die manier ziet de backend wiens gebruikersgegevens worden opgevraagd. Een gebruiker mag alleen zijn eigen gebruikersgegevens opvragen. De response bevat alle informatie over de gebruiker zoals beschreven bij registratie:
 
-### 4. Gebruiker aanpassen
-`POST /api/user/update`
-
-Het is mogelijk om een gebruiker zijn eigen e-mail of wachtwoord aan te laten passen. Dit vereist, naast de gegevens zelf, ook een **token**. Wanneer één van de twee entiteiten aangepast moeten worden, moet de andere data alsnog worden meegestuurd. Wachtwoorden moeten altijd een minimale lengte van 6 tekens hebben.
-
-```
+```json
 {
-   "email" : "sjaak@sjaak.nl",
-   "password": "123456",
-   "repeatedPassword": "123456"
+    "id": 3,
+    "username": "piet",
+    "email": "piet@novi.nl",
+    "info": "Ik woon in Utrecht",
+    "roles": [
+        "ROLE_USER"
+    ]
+}
+```
+### 4. Profielfoto uploaden
+`POST /api/user/image`
+
+Een gebruiker kan een profielfoto aan zijn profiel toevoegen. Dit vereist een **token**. De afbeelding moet worden aangeleverd in de vorm van een base64-string: 
+
+```json
+{
+  "base64Image":            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
 }
 ```
 
-### 5. Alle gebruikers opvragen [admin]
+Wanneer dit succesvol is, wordt het volledige gebruikers-object geretourneerd met alle huidige informatie over de gebruiker. 
+### 6. Alle gebruikers opvragen [admin]
 `GET /api/admin/all`
 
 Dit rest-endpoint geeft een lijst van alle gebruikers terug, maar is alleen toegankelijk voor gebruikers met de admin-rol. Het opvragen van deze gegevens vereist een **token**.
 
-### 6. Beveiligd endpoint [user]
+### 7. Beveiligd endpoint [user]
 `GET /api/test/user`
-Alleen gebruikers met een user-rol kunnen dit endpoint benaderen. Het opvragen van deze gegevens vereist een **token**. De response bevat een enkele string: `"User Content."`
 
-### 7. Beveiligd endpoint [admin]
+Alleen gebruikers met een user-rol kunnen dit endpoint benaderen. Het opvragen van deze gegevens vereist een **token**. De response bevat een string.
+
+### 8. Beveiligd endpoint [admin]
 `GET /api/test/admin`
-Alleen gebruikers met een admin-rol kunnen dit endpoint benaderen. Het opvragen van deze gegevens vereist een **token**. De response bevat een enkele string: `"Admin Board."` (IETS MEESTUREN?)
+Alleen gebruikers met een admin-rol kunnen dit endpoint benaderen. Het opvragen van deze gegevens vereist een **token**. De response bevat een enkele string: `"Admin Board."`.
+
+### 9. Errors
+De backend kan verschillende errors gooien. We hebben ons best gedaan om deze af te vangen. Lees dan ook vooral de
+foutmelding.
 
 ## Restpoints benaderen in Postman
 Wanneer je een authorisation-token hebt ontvangen zal de backend bij alle beveiligde endpoints willen controleren wie de aanvrager is op basis van deze token. Dit zul je dus ook in Postman mee moeten geven.
