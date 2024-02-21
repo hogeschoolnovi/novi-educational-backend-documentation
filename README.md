@@ -1,5 +1,7 @@
 # NOVI Educational Backend
 
+**Let op: deze backend wordt sinds 2023/11 niet meer gebruikt. De nieuwe backend en bijbehorende documentatie vindt je [hier](https://novi.datavortex.nl/).**
+
 ## Beschrijving
 Deze backend is gebouwd door NOVI en mag alleen worden gebruikt voor opleidings-doeleinden.
 
